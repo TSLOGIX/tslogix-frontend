@@ -1,50 +1,28 @@
-# tslogix-frontend
+# TSLogix Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the TSLogix Frontend project! This project is built using React and Vite.
 
-Currently, two official plugins are available:
+## How to Run the Project Locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Follow these simple steps to get the app running on your own computer:
 
-## Expanding the ESLint configuration
+### 1. Install Requirements
+Make sure you have [Node.js](https://nodejs.org/) installed on your computer.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 2. Install Dependencies
+Open your terminal, ensure you are in the `tslogix-frontend` folder, and run this command:
+```bash
+npm install
 ```
+*This will download all the necessary packages for the project.*
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### 3. Start the Application
+Once the installation is done, run this command to start the development server:
+```bash
+npm run dev
 ```
+*This will start the application. You can view it by clicking the local website link (usually `http://localhost:5173`) that appears in your terminal.*
+
+## Useful Commands
+- `npm run build` — Builds the app for production (when you want to deploy the app).
+- `npm run lint` — Checks the code for any errors.
