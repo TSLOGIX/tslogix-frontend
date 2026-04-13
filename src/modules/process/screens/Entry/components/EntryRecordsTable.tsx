@@ -169,13 +169,13 @@ const EntryRecordsTable: React.FC = () => {
         },
       },
       {
-        // ✅ Updated to use entry_date_time
+        // ✅ Updated to use entry_date_time with TIME display
         accessorKey: "entry_date_time",
         header: t('process:entry_date'),
-        size: 120,
+        size: 160,
         cell: ({ getValue }) => {
           const dateString = getValue() as string;
-          return formatDate(dateString);
+          return formatDateTime(dateString);  // Show date AND time
         },
       },
       {

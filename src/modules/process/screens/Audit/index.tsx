@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Text, LoaderSync, Divider, Button } from "@/components";
 import ProcessesStore from "@/modules/process/store";
 import { ProcessService } from "@/globalService";
-import { formatDate } from "@/utils/dateUtils";
+import { formatDate, formatDateTime } from "@/utils/dateUtils";
 import { exportSimpleTableToExcel } from "@/modules/reports/utils/exportUtils";
 import { generateOrderPDF, getStatusColor } from "@/modules/reports/utils/orderPdfExport";
 
@@ -180,10 +180,10 @@ const Review: React.FC = () => {
       entry_order_no: entry.entry_order_no || "",
       origin_id: entry.origin_id || "",
       document_type_id: entry.document_type_id || "",
-      // ✅ Properly handle string dates from API
-      registration_date: entry.registration_date ? entry.registration_date.split('T')[0] : "",
-      document_date: entry.document_date ? entry.document_date.split('T')[0] : "",
-      entry_date_time: entry.entry_date_time ? entry.entry_date_time.slice(0, 16) : "",
+      // ✅ Properly handle string dates from API - preserve time for registration_date and entry_date_time
+      registration_date: entry.registration_date ? entry.registration_date.slice(0, 16) : "",  // datetime-local format (YYYY-MM-DDTHH:MM)
+      document_date: entry.document_date ? entry.document_date.split('T')[0] : "",  // date only
+      entry_date_time: entry.entry_date_time ? entry.entry_date_time.slice(0, 16) : "",  // datetime-local format
       order_status: entry.order_status || "PENDING",
       total_volume: entry.total_volume || 0,
       total_weight: entry.total_weight || 0,
@@ -661,7 +661,7 @@ const Review: React.FC = () => {
                 <div className="flex flex-col">
                   <label className="font-medium text-gray-700 mb-1">{t('process:registration_date')} *</label>
                   <input
-                    type="date"
+                    type="datetime-local"
                     value={editFormData.registration_date}
                     onChange={(e) => handleEditInputChange('registration_date', e.target.value)}
                     className="h-10 border border-slate-400 rounded-md px-4 focus-visible:outline-1 focus-visible:outline-primary-500"
@@ -1189,7 +1189,7 @@ const Review: React.FC = () => {
             </div>
             <div>
               <span className="text-gray-500 text-xs">{t('process:entry_date')}</span>
-              <p className="font-medium">{formatDate(entry.entry_date_time)}</p>
+              <p className="font-medium">{formatDateTime(entry.entry_date_time)}</p>
             </div>
           </div>
 
