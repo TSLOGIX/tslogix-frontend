@@ -238,7 +238,7 @@ const ProductRegisterComponent: React.FC<ProductRegisterProps> = ({
           },
         },
         {
-          id: "actions",
+          accessor: "actions",
           header: t('actions', { defaultValue: 'Actions' }),
           cell: (info) => {
             const product = info.row.original;
