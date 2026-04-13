@@ -6,7 +6,7 @@ import { Divider } from "@/components";
 import DataTable from "@/components/DataTable";
 import { createTableColumns } from "@/utils/tableUtils";
 import { OrderBtnGroup } from "@/modules/process/components";
-import { Plus, Upload } from "@phosphor-icons/react";
+import { Plus, Upload, Trash } from "@phosphor-icons/react";
 import { ProductService } from "@/modules/maintenance/api/maintenance.service";
 
 interface ProductRegisterProps {
@@ -66,6 +66,20 @@ const ProductRegisterComponent: React.FC<ProductRegisterProps> = ({
     // Reset the file input
     event.target.value = '';
   }, [onRefresh]);
+
+  const handleDelete = useCallback(async (productId: string) => {
+    if (window.confirm(t('confirm_delete_product', { defaultValue: 'Are you sure you want to delete this product?' }))) {
+      try {
+        await ProductService.deleteProduct(productId);
+        toast.success(t('product_deleted_successfully', { defaultValue: 'Product deleted successfully' }));
+        if (onRefresh) onRefresh();
+      } catch (err: any) {
+        console.error('Delete product error:', err);
+        const errorMessage = err.response?.data?.error || err.message || 'Failed to delete product';
+        toast.error(errorMessage);
+      }
+    }
+  }, [t, onRefresh]);
   
   const columns = useMemo(
     () =>
@@ -223,8 +237,29 @@ const ProductRegisterComponent: React.FC<ProductRegisterProps> = ({
             return date ? new Date(date).toLocaleDateString() : "N/A";
           },
         },
+        {
+          id: "actions",
+          header: t('actions', { defaultValue: 'Actions' }),
+          cell: (info) => {
+            const product = info.row.original;
+            return (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(product.product_id);
+                  }}
+                  className="p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded transition-colors"
+                  title={t('delete', { defaultValue: 'Delete' })}
+                >
+                  <Trash size={18} />
+                </button>
+              </div>
+            );
+          },
+        },
       ]),
-    [t, handleFileSelect, fileInputRefs, uploadingProducts]
+    [t, handleFileSelect, fileInputRefs, uploadingProducts, handleDelete]
   );
 
   const buttonGroup = useMemo(
