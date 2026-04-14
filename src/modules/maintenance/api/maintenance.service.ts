@@ -179,17 +179,23 @@ export const ProductService = {
       product_line_id?: string;
       group_id?: string;
       name?: string;
+      page?: number;
+      limit?: number;
     } = {}
   ) => {
     try {
+      startLoader("products/fetch-form-fields"); // Using existing loader type
       const response = await api.get(productBaseURL, {
         params: filters,
       });
-      setProducts(response.data);
+      // Backend now returns { products, pagination }
+      setProducts(response.data.products || response.data);
       return response.data;
     } catch (err) {
       console.error("Fetch products error:", err);
       throw err;
+    } finally {
+      stopLoader("products/fetch-form-fields");
     }
   },
 
