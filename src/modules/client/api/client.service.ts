@@ -217,6 +217,9 @@ export const ClientService = {
         if (error.response.data) {
           if (typeof error.response.data === "string") {
             errorMessage = error.response.data;
+          } else if (error.response.data.errors && Array.isArray(error.response.data.errors)) {
+            // Handle validation errors array
+            errorMessage = error.response.data.errors.join(". ");
           } else if (error.response.data.message) {
             errorMessage = error.response.data.message;
           } else if (error.response.data.error) {
@@ -280,6 +283,9 @@ export const ClientService = {
         if (error.response.data) {
           if (typeof error.response.data === "string") {
             errorMessage = error.response.data;
+          } else if (error.response.data.errors && Array.isArray(error.response.data.errors)) {
+            // Handle validation errors array
+            errorMessage = error.response.data.errors.join(". ");
           } else if (error.response.data.message) {
             errorMessage = error.response.data.message;
           } else if (error.response.data.error) {
