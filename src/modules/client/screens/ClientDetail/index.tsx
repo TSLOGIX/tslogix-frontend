@@ -330,7 +330,7 @@ const ClientDetail: React.FC = () => {
                         setShowUserPasswordModal(true);
                       }}
                     >
-                      {t('client:change_password')}
+                      {t('client:buttons.change_password')}
                     </Button>
                   </div>
                 </div>
