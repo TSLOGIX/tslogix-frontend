@@ -251,22 +251,16 @@ const SimplifiedInventoryAllocation: React.FC = () => {
     }
   }, [fetchAllocationHelper]);
 
-  // ✅ Validate a single allocation row
+  // ✅ Validate a single allocation row (validation restrictions removed)
   const validateRow = useCallback((row: AllocationRow): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
 
     if (!row.warehouse_id) errors.push(t('inventory:validation.warehouse_required'));
     if (!row.cell_id) errors.push(t('inventory:validation.position_required'));
-    if (row.inventory_quantity <= 0) errors.push(t('inventory:validation.quantity_required'));
-    if (row.inventory_quantity > row.remaining_quantity) errors.push(t('inventory:validation.quantity_exceeds_remaining'));
-    if (row.package_quantity <= 0) errors.push(t('inventory:validation.packages_required'));
-    if (row.package_quantity > row.remaining_packages) errors.push(t('inventory:validation.packages_exceed_remaining'));
-    if (row.weight_kg <= 0) errors.push(t('inventory:validation.weight_required'));
-    // Removed weight limit validation - allow allocating more weight than remaining
-
+    // Removed all quantity validations - no restrictions on quantity, packages, or weight
 
     return { isValid: errors.length === 0, errors };
-  }, [allocationData, t]);
+  }, [t]);
 
   // ✅ Update a specific row
   const updateRow = useCallback((rowId: string, updates: Partial<AllocationRow>) => {
@@ -694,7 +688,6 @@ const SimplifiedInventoryAllocation: React.FC = () => {
                       <input
                         type="number"
                         min="0"
-                        max={row.remaining_quantity}
                         value={row.inventory_quantity || ''}
                         onChange={(e) => updateRow(row.id, { inventory_quantity: parseInt(e.target.value) || 0 })}
                         className="w-full text-xs border border-gray-300 rounded px-1 py-1 text-center"
@@ -707,7 +700,6 @@ const SimplifiedInventoryAllocation: React.FC = () => {
                       <input
                         type="number"
                         min="0"
-                        max={row.remaining_packages}
                         value={row.package_quantity || ''}
                         onChange={(e) => updateRow(row.id, { package_quantity: parseInt(e.target.value) || 0 })}
                         className="w-full text-xs border border-gray-300 rounded px-1 py-1 text-center"
